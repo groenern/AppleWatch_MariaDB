@@ -13,7 +13,7 @@ class XMLParser:
         tree = ET.parse(self.fileName)
         root = tree.getroot()
 
-        print("Parsing " + self.fileName)
+        print("Parsing " + self.fileName + "...")
 
         # retrieve export date
         self.exportDate = root.find('ExportDate').get('value')

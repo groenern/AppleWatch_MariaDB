@@ -46,7 +46,6 @@ def getUniqueDevices(workouts):
 def main():
     workouts, records = populateData()
 
-    
     myConn = connectToDatabase()
     # TODO Add Enum of Tables so no string literals 
     myConn.populateTable('AppleWorkouts', workouts)

@@ -14,6 +14,7 @@ class MariaDBConnector:
         self.cursor = None
 
     def connect(self):
+        print("Connecting to MariaDB...")
         # Connect to MariaDB
         try:
             self.connection = mariadb.connect(
@@ -23,7 +24,6 @@ class MariaDBConnector:
             )
             self.cursor = self.connection.cursor()
 
-            print("Connected to MariaDB")
         except mariadb.Error as e:
             print(f"Error connecting to MariaDB: {e}")
             return
@@ -34,7 +34,7 @@ class MariaDBConnector:
         try:
             self.cursor.execute("USE " + self.database)
 
-            print("Connected to " + self.database)
+            print("Connecting to " + self.database + "...")
         except mariadb.Error as e:
             print(f"Error connecting to Database: {e}")
             return
@@ -63,6 +63,8 @@ class MariaDBConnector:
     def populateTable(self, tableName, data):
         queryCount = 0
         failCount = 0
+
+        print("Populating " + tableName + "...")
 
         for datum in data:
             sql = f"INSERT INTO {tableName} ({','.join(datum.getColumns())}) VALUES ({','.join(datum.getValues())});"
