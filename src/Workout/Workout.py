@@ -13,10 +13,11 @@ class Workout:
         self.totalEnergyBurnedUnit = workoutElement.get('totalEnergyBurnedUnit')
         self.sourceName = workoutElement.get('sourceName')
         self.sourceVersion = workoutElement.get('sourceVersion')
-        self.device = workoutElement.get('device')
+        # self.device = workoutElement.get('device') // TODO ADD Device Class and Add Handling
         self.creationDate = workoutElement.get('creationDate')
         self.startDate = workoutElement.get('startDate')
         self.endDate = workoutElement.get('endDate')
+
 
         # Lists of Classes 
         self.workoutActivityList = []
@@ -39,4 +40,17 @@ class Workout:
 
         # TODO PARSE METADATA
 
-        # TODO __STR__
+    # return object values as a list
+    def getValues(self):
+        values = [self.workoutActivityType, self.duration, self.durationUnit, self.distance, self.distanceUnit, self.totalEnergyBurned, self.totalEnergyBurnedUnit, self.sourceName, self.sourceVersion, self.creationDate, self.startDate, self.endDate]
+        return [f"'{val}'" if isinstance(val, str) else 'NULL' if val is None else val for val in values]
+
+    @staticmethod
+    def getColumns():
+        columns = ['WorkoutActivityType', 'Duration', 'DurationUnit', 'Distance', 'DistanceUnit', 'EnergyBurned', 'EnergyUnit', 'SourceName', 'SourceVersion', 'CreationDate', 'StartDate', 'EndDate']
+        return columns
+    
+    @staticmethod
+    def getColumnDefinition():
+        columnDefinition = ['VARCHAR(255) NOT NULL', 'FLOAT', 'VARCHAR(8)', 'FLOAT', 'VARCHAR(8)', 'FLOAT', 'VARCHAR(8)', 'VARCHAR(24)', 'VARCHAR(24)', 'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)']
+        return columnDefinition

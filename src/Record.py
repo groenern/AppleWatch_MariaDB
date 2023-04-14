@@ -9,3 +9,9 @@ class Record:
         self.creationDate = recordElem.get('creationDate')
         self.startDate = recordElem.get('startDate')
         self.endDate = recordElem.get('endDate')
+
+    # TODO add column constraints
+    @staticmethod
+    def getColumns():
+        return ['Type', 'Unit', 'Value', 'SourceName', 'SourceVersion', 'Device', 'CreationDate', 'StartDate', 'EndDate']
+    
