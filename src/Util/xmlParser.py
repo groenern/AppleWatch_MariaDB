@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
-from Workout.Workout import Workout
-from Record import Record
+from src.AppleClasses.Workout import Workout
+from src.AppleClasses.Record import Record
 
 class XMLParser:
     def __init__(self, fileName):
@@ -23,7 +23,7 @@ class XMLParser:
 
         # Find all Workout elements and append a Workout object for each one
         for workout in root.findall('.//Workout'):
-            self.workouts.append(Workout(workout))
+            self.workouts.append(Workout.Workout(workout))
             self.workoutCount += 1
 
         print(str(self.workoutCount) + " workouts parsed")

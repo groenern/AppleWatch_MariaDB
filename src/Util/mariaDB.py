@@ -1,5 +1,7 @@
 import mariadb
-from Workout import Workout
+from src.AppleClasses.Workout import Workout
+from src.AppleClasses.Record import Record
+from src.AppleClasses.Device import Device
 
 class MariaDBConnector:
     def __init__(self, host, user, password, database):
@@ -37,9 +39,13 @@ class MariaDBConnector:
             print(f"Error connecting to Database: {e}")
             return
 
-        # Create Table
-        self.createTable('Workouts', Workout.Workout.getColumns(), Workout.Workout.getColumnDefinition())
-
+        # Create Tables
+        self.createTable('AppleWorkouts', Workout.Workout.getColumns(), Workout.Workout.getColumnConstraints())
+        self.createTable('AppleRecords', Record.getColumns(), Record.getColumnConstraints())
+        self.createTable('AppleDevices', Device.getColumns(), Device.getColumnConstraints())
+        self.createTable('AppleWorkoutActivity', Workout.WorkoutActivity.getColumns(), Workout.WorkoutActivity.getColumnConstraints())
+        self.createTable('AppleWorkoutEvent', Workout.WorkoutEvent.getColumns(), Workout.WorkoutEvent.getColumnConstraints())
+        self.createTable('AppleWorkoutStatistics', Workout.WorkoutStatistics.getColumns(), Workout.WorkoutStatistics.getColumnConstraints())
     # https://www.mariadbtutorial.com/mariadb-basics/mariadb-create-table/
     def createTable(self, tableName, columnNames, columnDefinition):
         try:
@@ -56,14 +62,17 @@ class MariaDBConnector:
 
     def populateTable(self, tableName, data):
         queryCount = 0
+        failCount = 0
 
         for datum in data:
             sql = f"INSERT INTO {tableName} ({','.join(datum.getColumns())}) VALUES ({','.join(datum.getValues())});"
 
             if(self.executeQuery(sql)):
                 queryCount += 1
+            else:
+                failCount += 1
         
-        print(str(queryCount) + " queries executed sucessfully")
+        print(str(queryCount) + " queries executed sucessfully, " + str(failCount) + " queries failed")
         self.connection.commit()
 
     def executeQuery(self, query):
