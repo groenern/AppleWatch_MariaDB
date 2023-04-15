@@ -40,12 +40,12 @@ class MariaDBConnector:
             return
 
         # Create Tables
-        self.createTable('AppleWorkouts', Workout.Workout.getColumns(), Workout.Workout.getColumnConstraints())
-        self.createTable('AppleRecords', Record.getColumns(), Record.getColumnConstraints())
-        self.createTable('AppleDevices', Device.getColumns(), Device.getColumnConstraints())
-        self.createTable('AppleWorkoutActivity', Workout.WorkoutActivity.getColumns(), Workout.WorkoutActivity.getColumnConstraints())
-        self.createTable('AppleWorkoutEvent', Workout.WorkoutEvent.getColumns(), Workout.WorkoutEvent.getColumnConstraints())
-        self.createTable('AppleWorkoutStatistics', Workout.WorkoutStatistics.getColumns(), Workout.WorkoutStatistics.getColumnConstraints())
+        self.createTable('Workouts', Workout.Workout.getColumns(), Workout.Workout.getColumnConstraints())
+        self.createTable('Records', Record.getColumns(), Record.getColumnConstraints())
+        self.createTable('Devices', Device.getColumns(), Device.getColumnConstraints())
+        self.createTable('Activities', Workout.WorkoutActivity.getColumns(), Workout.WorkoutActivity.getColumnConstraints())
+        self.createTable('Events', Workout.WorkoutEvent.getColumns(), Workout.WorkoutEvent.getColumnConstraints())
+        self.createTable('Statistics', Workout.WorkoutStatistics.getColumns(), Workout.WorkoutStatistics.getColumnConstraints())
     # https://www.mariadbtutorial.com/mariadb-basics/mariadb-create-table/
     def createTable(self, tableName, columnNames, columnDefinition):
         try:
@@ -84,7 +84,15 @@ class MariaDBConnector:
             return True
         except mariadb.Error as e:
             print(f"Error executing query: {e}")
-            
+    
+    def readQuery(self, query):
+        try:
+            self.cursor.execute(query)
+            result = self.cursor.fetchall()
+            return result
+        except mariadb.Error as e:
+            print(f"Error executing query: {e}")
+
     def closeConnection(self):
         if self.connection:
             self.connection.close()

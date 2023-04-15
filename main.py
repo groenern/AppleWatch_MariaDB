@@ -47,12 +47,13 @@ def main():
     workouts, records = populateData()
 
     myConn = connectToDatabase()
+
     # TODO Add Enum of Tables so no string literals 
-    myConn.populateTable('AppleWorkouts', workouts)
-    myConn.populateTable('AppleRecords', records)
+    myConn.populateTable('Workouts', workouts)
+    myConn.populateTable('Records', records)
 
     uniqueDevices = getUniqueDevices(workouts)
-    myConn.populateTable('AppleDevices', uniqueDevices)
+    myConn.populateTable('Devices', uniqueDevices)
     
     # Populate WorkoutActivities
     workoutActivities = []
@@ -72,9 +73,9 @@ def main():
             for statistic in workout.workoutStatisticList:
                 workoutStats.append(statistic)
     
-    myConn.populateTable('AppleWorkoutActivity', workoutActivities)
-    myConn.populateTable('AppleWorkoutEvent', workoutEvents)
-    myConn.populateTable('AppleWorkoutStatistics', workoutStats)
+    myConn.populateTable('Activities', workoutActivities)
+    myConn.populateTable('Events', workoutEvents)
+    myConn.populateTable('Statistics', workoutStats)
 
     myConn.closeConnection()
 
