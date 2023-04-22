@@ -25,7 +25,7 @@ def populateData():
     myXMLParser.parse()
     workouts = myXMLParser.getWorkouts()
     records = myXMLParser.getRecords()
-
+    
     return workouts, records
 
 def getUniqueDevices(workouts):
@@ -47,7 +47,7 @@ def main():
     workouts, records = populateData()
 
     myConn = connectToDatabase()
-
+    
     # TODO Add Enum of Tables so no string literals 
     myConn.populateTable('Workouts', workouts)
     myConn.populateTable('Records', records)
@@ -55,7 +55,7 @@ def main():
     uniqueDevices = getUniqueDevices(workouts)
     myConn.populateTable('Devices', uniqueDevices)
     
-    # Populate WorkoutActivities
+    # Populate WorkoutActivities, Events, Statistics
     workoutActivities = []
     workoutEvents = []
     workoutStats = []
@@ -76,6 +76,8 @@ def main():
     myConn.populateTable('Activities', workoutActivities)
     myConn.populateTable('Events', workoutEvents)
     myConn.populateTable('Statistics', workoutStats)
+
+    # Create Workout Records Table 
 
     myConn.closeConnection()
 

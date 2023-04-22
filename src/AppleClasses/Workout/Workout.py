@@ -58,13 +58,13 @@ class Workout:
     # return object values as a list
     def getValues(self):
         values = [self.workoutKey, self.workoutActivityType, self.duration, self.durationUnit, self.sourceName, self.sourceVersion, 
-                  self.device.device, self.creationDate, self.startDate, self.endDate, self.indoorWorkout, self.averageMETs, self.elevationAscended]
+                  self.device.deviceKey, self.creationDate, self.startDate, self.endDate, self.indoorWorkout, self.averageMETs, self.elevationAscended]
         return [f"'{val}'" if isinstance(val, str) else 'NULL' if val is None else val for val in values]
 
     @staticmethod
     def getColumns():
         columns = ['WorkoutKey', 'WorkoutActivityType', 'Duration', 'DurationUnit', 'SourceName', 'SourceVersion',
-                    'Device', 'CreationDate', 'StartDate', 'EndDate', 'IndoorWorkout', 'AverageMETs', 'ElevationAscended']
+                    'DeviceKey', 'CreationDate', 'StartDate', 'EndDate', 'IndoorWorkout', 'AverageMETs', 'ElevationAscended']
         return columns
     
     @staticmethod

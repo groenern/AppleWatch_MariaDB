@@ -46,6 +46,7 @@ class MariaDBConnector:
         self.createTable('Activities', Workout.WorkoutActivity.getColumns(), Workout.WorkoutActivity.getColumnConstraints())
         self.createTable('Events', Workout.WorkoutEvent.getColumns(), Workout.WorkoutEvent.getColumnConstraints())
         self.createTable('Statistics', Workout.WorkoutStatistics.getColumns(), Workout.WorkoutStatistics.getColumnConstraints())
+
     # https://www.mariadbtutorial.com/mariadb-basics/mariadb-create-table/
     def createTable(self, tableName, columnNames, columnDefinition):
         try:
@@ -63,12 +64,10 @@ class MariaDBConnector:
     def populateTable(self, tableName, data):
         queryCount = 0
         failCount = 0
-
         print("Populating " + tableName + "...")
 
         for datum in data:
             sql = f"INSERT INTO {tableName} ({','.join(datum.getColumns())}) VALUES ({','.join(datum.getValues())});"
-
             if(self.executeQuery(sql)):
                 queryCount += 1
             else:
@@ -76,7 +75,7 @@ class MariaDBConnector:
         
         print(str(queryCount) + " queries executed sucessfully, " + str(failCount) + " queries failed")
         self.connection.commit()
-
+        
     def executeQuery(self, query):
         try:
             self.cursor.execute(query)
