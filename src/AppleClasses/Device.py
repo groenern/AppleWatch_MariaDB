@@ -1,3 +1,5 @@
+import uuid
+
 class Device:
     def __init__(self, deviceString):
         self.deviceKey = None
@@ -25,10 +27,10 @@ class Device:
                     self.hardware = element.split(":")[1]
                 elif element.startswith("software:"):
                     self.software = element.split(":")[1].rstrip(">")
-        else:
-            self.deviceKey = 'NULL'
-            self.name = 'NULL'
-            self.manufacturer = 'NULL'
+        else: # Manually Entered through Fitness App
+            self.deviceKey = str(uuid.uuid4())
+            self.name = 'Apple iPhone'
+            self.manufacturer = 'Apple Inc.'
             self.model = 'NULL'
             self.hardware = 'NULL'
             self.software = 'NULL'
@@ -41,5 +43,7 @@ class Device:
     def getColumns():
         return ['DeviceKey', 'Name', 'Manufacturer', 'Model', 'Hardware', 'Software']
     
+    @staticmethod
     def getColumnConstraints():
-        return ['VARCHAR(32) NOT NULL', 'VARCHAR(16)', 'VARCHAR(16)', 'VARCHAR(8)', 'VARCHAR(16)', 'VARCHAR(8)']
+        return ['VARCHAR(64) NOT NULL PRIMARY KEY', 'VARCHAR(16)', 'VARCHAR(16)', 'VARCHAR(8)', 'VARCHAR(16)', 'VARCHAR(8)']
+    

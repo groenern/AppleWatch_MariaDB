@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from src.AppleClasses.Workout import Workout
+from src.AppleClasses.WorkoutClasses import Workout
 from src.AppleClasses.Record import Record
 
 class XMLParser:
@@ -16,7 +16,7 @@ class XMLParser:
         print("Parsing " + self.fileName + "...")
 
         # retrieve export date
-        self.exportDate = root.find('ExportDate').get('value')
+        self.exportDate = root.find('ExportDate').get('value')[:10]
         print("Export Date: " + self.exportDate)
 
         self.workoutCount = 0

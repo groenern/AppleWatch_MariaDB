@@ -1,6 +1,6 @@
-from src.AppleClasses.Workout.WorkoutStatistics import WorkoutStatistics
-from src.AppleClasses.Workout.WorkoutEvent import WorkoutEvent
-from src.AppleClasses.Workout.WorkoutActivity import WorkoutActivity
+from src.AppleClasses.WorkoutClasses.WorkoutStatistics import WorkoutStatistics
+from src.AppleClasses.WorkoutClasses.WorkoutEvent import WorkoutEvent
+from src.AppleClasses.WorkoutClasses.WorkoutActivity import WorkoutActivity
 from src.AppleClasses.Device import Device
 import uuid
 
@@ -12,7 +12,7 @@ class Workout:
         self.durationUnit = workoutElement.get('durationUnit')
         self.sourceName = workoutElement.get('sourceName')
         self.sourceVersion = workoutElement.get('sourceVersion')
-        self.creationDate = workoutElement.get('creationDate')
+        self.creationDate = workoutElement.get('creationDate')[:10]
         self.startDate = workoutElement.get('startDate')
         self.endDate = workoutElement.get('endDate')
 
@@ -69,6 +69,7 @@ class Workout:
     
     @staticmethod
     def getColumnConstraints():
-        columnDefinition = ['VARCHAR(64) NOT NULL', 'VARCHAR(128)', 'FLOAT', 'VARCHAR(8)', 'VARCHAR(24)', 'VARCHAR(24)',
+        columnDefinition = ['VARCHAR(64) NOT NULL PRIMARY KEY', 'VARCHAR(128)', 'FLOAT', 'VARCHAR(8)', 'VARCHAR(24)', 'VARCHAR(24)',
                              'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)','VARCHAR(4)', 'VARCHAR(64)', 'VARCHAR(32)']
         return columnDefinition
+    

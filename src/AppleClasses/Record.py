@@ -9,7 +9,7 @@ class Record:
         self.value = recordElem.get('value')
         self.sourceName = recordElem.get('sourceName')
         self.sourceVersion = recordElem.get('sourceVersion')
-        self.creationDate = recordElem.get('creationDate')
+        self.creationDate = recordElem.get('creationDate')[:10]
         self.startDate = recordElem.get('startDate')
         self.endDate = recordElem.get('endDate')
 
@@ -29,4 +29,4 @@ class Record:
     
     @staticmethod
     def getColumnConstraints():
-        return ['VARCHAR (64) NOT NULL', 'VARCHAR (64)', 'VARCHAR(16)', 'VARCHAR(64)', 'VARCHAR(24)', 'VARCHAR(24)', 'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)']
+        return ['VARCHAR (64) NOT NULL PRIMARY KEY', 'VARCHAR (64)', 'VARCHAR(16)', 'VARCHAR(64)', 'VARCHAR(24)', 'VARCHAR(24)', 'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)', 'VARCHAR(64)']

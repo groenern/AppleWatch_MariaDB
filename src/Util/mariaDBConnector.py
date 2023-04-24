@@ -1,5 +1,5 @@
 import mariadb
-from src.AppleClasses.Workout import Workout
+from src.AppleClasses.WorkoutClasses import Workout
 from src.AppleClasses.Record import Record
 from src.AppleClasses.Device import Device
 
@@ -39,14 +39,6 @@ class MariaDBConnector:
             print(f"Error connecting to Database: {e}")
             return
 
-        # Create Tables
-        self.createTable('Workouts', Workout.Workout.getColumns(), Workout.Workout.getColumnConstraints())
-        self.createTable('Records', Record.getColumns(), Record.getColumnConstraints())
-        self.createTable('Devices', Device.getColumns(), Device.getColumnConstraints())
-        self.createTable('Activities', Workout.WorkoutActivity.getColumns(), Workout.WorkoutActivity.getColumnConstraints())
-        self.createTable('Events', Workout.WorkoutEvent.getColumns(), Workout.WorkoutEvent.getColumnConstraints())
-        self.createTable('Statistics', Workout.WorkoutStatistics.getColumns(), Workout.WorkoutStatistics.getColumnConstraints())
-
     # https://www.mariadbtutorial.com/mariadb-basics/mariadb-create-table/
     def createTable(self, tableName, columnNames, columnDefinition):
         try:
@@ -71,6 +63,7 @@ class MariaDBConnector:
             if(self.executeQuery(sql)):
                 queryCount += 1
             else:
+                # print(sql) DEBUG
                 failCount += 1
         
         print(str(queryCount) + " queries executed sucessfully, " + str(failCount) + " queries failed")
