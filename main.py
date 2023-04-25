@@ -23,7 +23,10 @@ def main():
     myHandler.populateData()
     myHandler.createTables()
     myHandler.populateTables()
-
+    
+    # Upload Workout Data to Google Sheets
+    myHandler.uploadWorkoutData()
+    
     # End Connection
     myHandler.closeConnection()
 

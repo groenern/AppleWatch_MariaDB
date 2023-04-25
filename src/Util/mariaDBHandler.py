@@ -3,6 +3,8 @@ from src.Util.xmlParser import XMLParser
 from src.AppleClasses.WorkoutClasses import Workout
 from src.AppleClasses.Record import Record
 from src.AppleClasses.Device import Device
+import configparser
+from src.Util.GoogleHandler import GoogleHandler
 
 class MariaDBHandler:
     def __init__(self, mariaDBConnector):
@@ -11,6 +13,7 @@ class MariaDBHandler:
         self.records = []
         self.uniqueDevices = []
         self.workoutRecords = {}
+        self.gHandler = None
 
     def connect(self):
         self.connector.connect()
@@ -112,7 +115,28 @@ class MariaDBHandler:
         self.connector.closeConnection()
 
     def linkWorkoutRecords(self):
+
         for r in self.records:
             for w in self.workouts:
                 if r.creationDate == w.creationDate and r.startDate >= w.startDate and r.endDate <= w.endDate:
                     self.workoutRecords[r.recordKey] = w.workoutKey
+
+    def uploadWorkoutData(self):
+        print("Connecting to Google Sheets...")
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+
+        email = config['user']['email']
+        credentials = config['user']['credentials']
+        spreadsheetName = config['spreadsheet']['title']
+            
+        self.gHandler = GoogleHandler(email, credentials,spreadsheetName)
+
+        # create and populates workouts
+        numRows = len(self.workouts)
+        numCols = 7
+
+        self.gHandler.createWorksheet("Workouts", numRows, numCols)
+        self.gHandler.populateWorksheet("Workouts", self.workouts)
+
+        print(str(self.gHandler))
