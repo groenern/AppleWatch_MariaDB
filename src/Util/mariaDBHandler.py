@@ -10,6 +10,7 @@ class MariaDBHandler:
         self.workouts = []
         self.records = []
         self.uniqueDevices = []
+        self.workoutRecords = {}
 
     def connect(self):
         self.connector.connect()
@@ -19,8 +20,10 @@ class MariaDBHandler:
         myXMLParser.parse()
         self.workouts = myXMLParser.getWorkouts()
         self.records = myXMLParser.getRecords()
+        self.linkWorkoutRecords()
 
     def createTables(self):
+        print("Creating Tables...")
         self.connector.createTable('Workouts', Workout.Workout.getColumns(), Workout.Workout.getColumnConstraints()) 
         self.connector.createTable('Records', Record.getColumns(), Record.getColumnConstraints())
         self.connector.createTable('Devices', Device.getColumns(), Device.getColumnConstraints())
@@ -33,6 +36,13 @@ class MariaDBHandler:
         self.createForeignKeys('Activities', 'fk_WorkoutActivities', 'WorkoutKey', 'Workouts')
         self.createForeignKeys('Events', 'fk_WorkoutEvents', 'WorkoutKey', 'Workouts')
         self.createForeignKeys('Statistics', 'fk_WorkoutStats', 'WorkoutKey', 'Workouts')
+
+        # Create a RecordWorkoutKey table to link Records to Workouts 
+        columns = ['RecordKey', 'WorkoutKey']
+        columnConstraints = ['VARCHAR(64) NOT NULL PRIMARY KEY', 'VARCHAR(64)']
+
+        self.connector.createTable('RecordWorkoutKey', columns, columnConstraints)
+        self.createForeignKeys('RecordWorkoutKey', 'fk_WorkoutKey', 'WorkoutKey', 'Workouts')
 
     def createForeignKeys(self, tableName, constraintName, foreignKeyName, referenceTableName):
         query = f"""ALTER TABLE {tableName}
@@ -49,6 +59,21 @@ class MariaDBHandler:
         self.connector.populateTable('Workouts', self.workouts)
         self.connector.populateTable('Records', self.records)
         
+        # Populate RecordWorkoutKey
+        print("Populating RecordWorkoutKey...")
+        failCount = 0
+        queryCount = 0
+
+        for recordKey in self.workoutRecords:
+            sqlQuery = f'INSERT INTO RecordWorkoutKey VALUES (\'{recordKey}\', \'{self.workoutRecords[recordKey]}\');'
+
+            if(self.connector.executeQuery(sqlQuery)):
+                queryCount += 1
+            else:
+                failCount += 1
+        
+        print(f"{queryCount} queries executed sucessfully, {failCount} queries failed")
+
         # Populate WorkoutActivities, Events, Statistics
         workoutActivities = []
         workoutEvents = []
@@ -85,3 +110,9 @@ class MariaDBHandler:
 
     def closeConnection(self):
         self.connector.closeConnection()
+
+    def linkWorkoutRecords(self):
+        for r in self.records:
+            for w in self.workouts:
+                if r.creationDate == w.creationDate and r.startDate >= w.startDate and r.endDate <= w.endDate:
+                    self.workoutRecords[r.recordKey] = w.workoutKey

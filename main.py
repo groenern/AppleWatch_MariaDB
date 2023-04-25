@@ -1,4 +1,5 @@
-from src.Util import mariaDBConnector, xmlParser, mariaDBHandler
+from src.Util.mariaDBConnector import MariaDBConnector
+from src.Util.mariaDBHandler import MariaDBHandler
 import configparser
 
 def main():
@@ -12,10 +13,10 @@ def main():
     mariaDBPass = mariaDBConfig['pass']
     mariaDBDatabase = mariaDBConfig['database']
 
-    myConn = mariaDBConnector.MariaDBConnector(mariaDBHost, mariaDBUser, mariaDBPass, mariaDBDatabase)
+    myConn = MariaDBConnector(mariaDBHost, mariaDBUser, mariaDBPass, mariaDBDatabase)
     
     # Create MariaDBHandler and Connect
-    myHandler = mariaDBHandler.MariaDBHandler(myConn)
+    myHandler = MariaDBHandler(myConn)
     myHandler.connect()
 
     # Populate MariaDB Database

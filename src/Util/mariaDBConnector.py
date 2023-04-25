@@ -48,8 +48,6 @@ class MariaDBConnector:
 
             self.cursor.execute(sqlQuery)
             self.connection.commit()
-
-            print(tableName + " table created")
         except mariadb.Error as e:
             print(f"Error creating table: {e}") 
 
