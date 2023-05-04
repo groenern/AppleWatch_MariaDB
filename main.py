@@ -30,5 +30,8 @@ def main():
     # End Connection
     myHandler.closeConnection()
 
+    # SELECT R.Type FROM Records R JOIN RecordWorkoutKey RWK ON R.RecordKey = RWK.RecordKey WHERE RWK.WorkoutKey = 'f9c4d507-812a-4adb-8e2d-84bba5ba2942';
+    # INSTLAL XUBUNTU
+    
 if __name__ == "__main__":
     main()
